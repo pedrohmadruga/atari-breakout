@@ -1,0 +1,21 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/*Layout creation*/
+body {
+    background-image: url("./images/background.webp");
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+    height: 100%;
+    margin: 0;
+}
+
+#gameCanvas {
+    background-color: #000;
+    display: block;
+    margin: 2rem auto;
+    border: 2px solid white;
+}
