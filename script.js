@@ -2,9 +2,18 @@
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-const PLATFORM_STARTER_WIDTH = 75
-const BALL_STARTER_SPEED = 3
-const BALL_STARTER_RADIUS = 8
+const PLATFORM_STARTER_WIDTH = 75;
+const BALL_STARTER_SPEED = 3;
+const BALL_STARTER_RADIUS = 8;
+const BRICK_X_MARGIN = 20; // Margin before the right and left borders of the canvas
+const BRICK_Y_MARGIN = 50; // Margin before the top border
+const BRICK_SPACING = 8; // Spacing between bricks
+const BRICK_HEIGHT = 20;
+const PLATFORM_HEIGHT = 10;
+const PLATFORM_BOTTOM_MARGIN = 20;
+const BRICK_MIN_WIDTH = 60;
+const BRICK_MAX_WIDTH = 100;
+const ROWS = 8;
 
 
 class Ball {
@@ -56,7 +65,7 @@ class Ball {
 }
 
 class Platform {
-    #height = 10;
+    #height = PLATFORM_HEIGHT;
     #width = PLATFORM_STARTER_WIDTH;
     #xPosition;
     #yPosition;
@@ -86,7 +95,7 @@ class Platform {
 class Brick {
     #xPosition;
     #yPosition;
-    #height = 20;
+    #height = BRICK_HEIGHT;
     #width;
     #isVisible = true;
 
@@ -115,7 +124,7 @@ class Brick {
 
 const platform = new Platform(
     canvas.width / 2 - PLATFORM_STARTER_WIDTH / 2,
-    canvas.height - 20
+    canvas.height - PLATFORM_BOTTOM_MARGIN
 );
 
 const ball = new Ball(
@@ -124,6 +133,43 @@ const ball = new Ball(
     BALL_STARTER_SPEED,                               
     -BALL_STARTER_SPEED                               
 );
+
+const bricks = generateBricks();
+
+function generateBricks() {
+    const bricks = [];
+
+    for (let row = 0; row < ROWS; row++) {
+        let x = BRICK_X_MARGIN;
+        const y = BRICK_Y_MARGIN + row * (BRICK_HEIGHT + BRICK_SPACING);
+
+        while (x < canvas.width - BRICK_X_MARGIN) {
+            const remainingSpace = canvas.width - BRICK_X_MARGIN - x;
+            let width;
+
+            if (remainingSpace <= BRICK_MAX_WIDTH) {
+                // The last brick will fit inside the remaining space
+                width = remainingSpace;
+            } else {
+                width = Math.floor(Math.random() * (BRICK_MAX_WIDTH - BRICK_MIN_WIDTH + 1)) + BRICK_MIN_WIDTH;
+            }
+
+            bricks.push(new Brick(x, y, width));
+
+            x += width + BRICK_SPACING;
+
+            // If there is no space left for a last brick, we stretch the current one until it reaches the margin
+            if (canvas.width - BRICK_X_MARGIN - x < BRICK_MIN_WIDTH) {
+                const lastBrick = bricks[bricks.length - 1];
+                lastBrick.width += canvas.width - BRICK_X_MARGIN - (x - BRICK_SPACING);
+                break;
+            }
+        }
+    }
+
+    return bricks;
+}
+
 
 let ballIsMoving = false;
 
@@ -145,10 +191,9 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
     platform.draw(ctx); 
-    ball.draw(ctx); 
+    ball.draw(ctx);
 
-    console.log(ball.xSpeed)
-
+    for(const brick of bricks) { brick.draw(ctx) }
 
     if (ballIsMoving) {
         ball.update();
@@ -163,7 +208,7 @@ function gameLoop() {
             }
             ball.reverseY();
         }
-        else if (ball.y >= canvas.height) {
+        else if (ball.y >= canvas.height) { // Hit the bottom border
             console.log('perdeu');
             ballIsMoving = false;
             return;
