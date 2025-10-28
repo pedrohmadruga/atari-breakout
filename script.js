@@ -107,7 +107,7 @@ canvas.addEventListener("mousedown", () => {
 canvas.addEventListener("mousemove", event => {
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
-    platform.x = mouseX - platform.width / 2;
+    platform.x = Math.max(0, Math.min(mouseX - platform.width / 2, canvas.width - platform.width));
 });
 
 
@@ -117,14 +117,22 @@ function gameLoop() {
     platform.draw(ctx); 
     ball.draw(ctx); 
 
-    console.log(platform.height)
+    console.log(ball.xSpeed)
+
 
     if (ballIsMoving) {
         ball.update();
-        
         if (ball.x >= canvas.width || ball.x <= 0) { ball.reverseX() } // Hit right or left border
         if (ball.y <= 0) { ball.reverseY() } // Hit top border
-        if (ball.y >= platform.y && ball.x >= platform.x && ball.x <= platform.x + platform.width) { ball.reverseY() }
+        if (ball.y >= platform.y && ball.x >= platform.x && ball.x <= platform.x + platform.width) { // Hit the platform
+            if (ball.x >= platform.x && ball.x < platform.x + platform.width / 2) {
+                ball.xSpeed = Math.abs(ball.xSpeed) * -1;
+            }
+            else if (ball.x <= platform.x + platform.width && ball.x > platform.x - platform.width / 2) {
+                ball.xSpeed = Math.abs(ball.xSpeed);
+            }
+            ball.reverseY();
+        }
         else if (ball.y >= canvas.height) {
             console.log('perdeu');
             ballIsMoving = false;
