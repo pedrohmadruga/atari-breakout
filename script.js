@@ -83,6 +83,36 @@ class Platform {
     }
 }
 
+class Brick {
+    #xPosition;
+    #yPosition;
+    #height = 20;
+    #width;
+    #isVisible = true;
+
+    constructor(xPos, yPos, width) {
+        this.#xPosition = xPos;
+        this.#yPosition = yPos;
+        this.#width = width;
+    }
+
+    get height() { return this.#height }
+    get width() { return this.#width }
+    get x() { return this.#xPosition }
+    get y() { return this.#yPosition }
+    get isVisible() { return this.#isVisible }
+
+    set width(width) { this.#width = width }
+    set x(x) { this.#xPosition = x }
+    set y(y) { this.#yPosition = y }
+    set isVisible(isVisible) { this.#isVisible = isVisible }
+
+    draw = function(ctx) {
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.#xPosition, this.#yPosition, this.#width, this.#height);
+    }
+}
+
 const platform = new Platform(
     canvas.width / 2 - PLATFORM_STARTER_WIDTH / 2,
     canvas.height - 20
@@ -125,10 +155,10 @@ function gameLoop() {
         if (ball.x >= canvas.width || ball.x <= 0) { ball.reverseX() } // Hit right or left border
         if (ball.y <= 0) { ball.reverseY() } // Hit top border
         if (ball.y >= platform.y && ball.x >= platform.x && ball.x <= platform.x + platform.width) { // Hit the platform
-            if (ball.x >= platform.x && ball.x < platform.x + platform.width / 2) {
+            if (ball.x >= platform.x && ball.x < platform.x + platform.width / 2) { // Hit left side of the platform
                 ball.xSpeed = Math.abs(ball.xSpeed) * -1;
             }
-            else if (ball.x <= platform.x + platform.width && ball.x > platform.x - platform.width / 2) {
+            else if (ball.x <= platform.x + platform.width && ball.x > platform.x - platform.width / 2) { // Hit right part of the platform
                 ball.xSpeed = Math.abs(ball.xSpeed);
             }
             ball.reverseY();
