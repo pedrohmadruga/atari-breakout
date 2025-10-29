@@ -101,11 +101,13 @@ class Brick {
     #height = BRICK_HEIGHT;
     #width;
     #isVisible = true;
+    #color;
 
-    constructor(xPos, yPos, width) {
+    constructor(xPos, yPos, width, color) {
         this.#xPosition = xPos;
         this.#yPosition = yPos;
         this.#width = width;
+        this.#color = color
     }
 
     get height() { return this.#height }
@@ -120,7 +122,7 @@ class Brick {
     set isVisible(isVisible) { this.#isVisible = isVisible }
 
     draw = function(ctx) {
-        ctx.fillStyle = "red";
+        ctx.fillStyle = this.#color;
         if (this.isVisible) {
             ctx.fillRect(this.#xPosition, this.#yPosition, this.#width, this.#height);
         }
@@ -143,6 +145,7 @@ const bricks = generateBricks();
 
 function generateBricks() {
     const bricks = [];
+    const colors = ["red", "orange", "yellow", "green", "aqua", "blue", "blueviolet", "magenta"]
 
     for (let row = 0; row < ROWS; row++) {
         let x = BRICK_X_MARGIN;
@@ -159,7 +162,7 @@ function generateBricks() {
                 width = Math.floor(Math.random() * (BRICK_MAX_WIDTH - BRICK_MIN_WIDTH + 1)) + BRICK_MIN_WIDTH;
             }
 
-            bricks.push(new Brick(x, y, width));
+            bricks.push(new Brick(x, y, width, colors[row]));
 
             x += width + BRICK_SPACING;
 
