@@ -115,6 +115,7 @@ class Brick {
     get x() { return this.#xPosition }
     get y() { return this.#yPosition }
     get isVisible() { return this.#isVisible }
+    get color() { return this.#color }
 
     set width(width) { this.#width = width }
     set x(x) { this.#xPosition = x }
@@ -137,7 +138,7 @@ const platform = new Platform(
 const ball = new Ball(
     platform.x + platform.width / 2, 
     platform.y - BALL_STARTER_RADIUS,                  
-    BALL_STARTER_SPEED,                               
+    BALL_STARTER_SPEED,               
     -BALL_STARTER_SPEED                               
 );
 
