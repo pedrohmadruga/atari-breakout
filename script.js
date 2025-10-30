@@ -19,7 +19,7 @@ const BRICK_MIN_WIDTH = 60;
 const BRICK_MAX_WIDTH = 100;
 
 // Global variables
-let ballIsMoving, gameLoopId, bricks, currentScore = 0, highscore;
+let ballIsMoving, gameLoopId, bricks, currentScore = 0, highscore = 0;
 
 class Ball {
     #xPosition;
@@ -279,7 +279,12 @@ function gameLoop() {
         
         // Collided with the bottom
         else if (ball.y + ball.radius > canvas.height) { 
-            console.log('perdeu');
+            if (highscore < currentScore) {
+                console.log('entrou');
+                highscore = currentScore;
+                highscoreEl.textContent = highscore;
+            }
+
             ballIsMoving = false;
             return;
         }
