@@ -1,6 +1,10 @@
 "use strict"
 
+// DOM and constants
 const canvas = document.getElementById('gameCanvas');
+const currentScoreEl = document.querySelector('.current_score');
+const highscoreEl = document.querySelector('.highscore');
+const playAgainBtn = document.querySelector('.play_again_button');
 const ctx = canvas.getContext('2d');
 const PLATFORM_STARTER_WIDTH = 75;
 const BALL_STARTER_SPEED = 3;
@@ -13,9 +17,9 @@ const PLATFORM_HEIGHT = 10;
 const PLATFORM_BOTTOM_MARGIN = 20;
 const BRICK_MIN_WIDTH = 60;
 const BRICK_MAX_WIDTH = 100;
-const ROWS = 8;
 
-let ballIsMoving;
+// Global variables
+let ballIsMoving, gameLoopId, bricks;
 
 class Ball {
     #xPosition;
@@ -142,13 +146,11 @@ const ball = new Ball(
     -BALL_STARTER_SPEED                               
 );
 
-const bricks = generateBricks();
-
 function generateBricks() {
     const bricks = [];
     const colors = ["red", "orange", "yellow", "green", "aqua", "blue", "blueviolet", "magenta"]
 
-    for (let row = 0; row < ROWS; row++) {
+    for (let row = 0; row < colors.length; row++) {
         let x = BRICK_X_MARGIN;
         const y = BRICK_Y_MARGIN + row * (BRICK_HEIGHT + BRICK_SPACING);
 
@@ -184,8 +186,6 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
-resetGame();
-
 canvas.addEventListener("mousedown", () => {
     if (!ballIsMoving) {
         resetGame();
@@ -199,6 +199,30 @@ canvas.addEventListener("mousemove", event => {
     platform.x = Math.max(0, Math.min(mouseX - platform.width / 2, canvas.width - platform.width));
 });
 
+playAgainBtn.addEventListener("click", () => {
+    stopLoop();
+    resetGame();
+    startGame();
+});
+
+function startGame() {
+    ballIsMoving = false;
+    bricks = generateBricks();
+    gameLoop();
+}
+
+function stopLoop() {
+    cancelAnimationFrame(gameLoopId);
+}
+
+function resetGame() {
+    ball.xSpeed = BALL_STARTER_SPEED;
+    ball.ySpeed = -BALL_STARTER_SPEED;
+    ball.x = canvas.width / 2;
+    ball.y = platform.y - ball.radius;
+    ball.update(ball.x, ball.y);
+    ballIsMoving = false;
+}
 
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
@@ -251,6 +275,7 @@ function gameLoop() {
             ball.xSpeed = hitPoint * 8; 
         }
         
+        // Collided with the bottom
         else if (ball.y + ball.radius > canvas.height) { 
             console.log('perdeu');
             ballIsMoving = false;
@@ -297,14 +322,8 @@ function gameLoop() {
         }
     }
 
-    requestAnimationFrame(gameLoop);
+    gameLoopId = requestAnimationFrame(gameLoop);
 }
 
-function resetGame() {
-    ball.update(canvas.width / 2, platform.y - ball.radius);
-    ball.xSpeed = BALL_STARTER_SPEED;
-    ball.ySpeed = -BALL_STARTER_SPEED;
-    ballIsMoving = false;
-}
-
-gameLoop();
+resetGame();
+startGame();
