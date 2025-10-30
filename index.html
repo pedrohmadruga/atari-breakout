@@ -11,7 +11,18 @@
         />
     </head>
     <body>
-        <canvas id="gameCanvas" width="800" height="600">
+        <div class="container">  
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            <div class="information_container">
+                <div class="scores">
+                    <h1>Current score: <span class="current_score">0</span></h1>
+                    <h1>Highscore: <span class="highscore">0</span></h1>
+                </div>
+                <div class="play_again">
+                    <button class="play_again_button">Play again</button>
+                </div>
+            </div>
+        </div>
     </body>
 
     <script src="script.js"></script>

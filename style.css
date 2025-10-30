@@ -1,7 +1,10 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: "DM Mono", monospace;
 }
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap");
 
 /*Layout creation*/
 body {
@@ -18,4 +21,49 @@ body {
     display: block;
     margin: 2rem auto;
     border: 2px solid white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.information_container {
+    width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.scores {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    color: #fff;
+}
+
+.play_again_button {
+  background-color: #5f3ed3;
+  color: white; 
+  padding: 15px 30px; 
+  border: none; 
+  border-radius: 8px; 
+  font-size: 18px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+  text-decoration: none; 
+  display: inline-block; 
+}
+
+.play_again_button:hover {
+  background-color: #45a049; 
+}
+
+.play_again_button:active {
+  background-color: #3e8e41; 
+  transform: translateY(1px); 
 }
