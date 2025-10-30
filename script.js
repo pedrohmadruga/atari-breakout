@@ -148,7 +148,7 @@ const ball = new Ball(
 
 function generateBricks() {
     const bricks = [];
-    const colors = ["red", "orange", "yellow", "green", "aqua", "blue", "blueviolet", "magenta"]
+    const colors = ["red", "orange", "yellow", "green", "aqua", "blue", "blueviolet", "magenta"];
 
     for (let row = 0; row < colors.length; row++) {
         let x = BRICK_X_MARGIN;
@@ -226,6 +226,50 @@ function resetGame() {
     ballIsMoving = false;
 }
 
+function victoryScreen() {
+    stopLoop();
+    updateHighscore();
+
+    ballIsMoving = false;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "48px DM Mono";
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.fillText("🎉 You own! 🎉", canvas.width / 2, canvas.height / 2);
+
+    ctx.font = "24px DM Mono";
+    ctx.fillText("Click 'Play Again' to restart", canvas.width / 2, canvas.height / 2 + 60);
+}
+
+function loseScreen() {
+    stopLoop();
+    updateHighscore();
+
+    ballIsMoving = false;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = "48px DM Mono";
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.fillText("💀 Game Over 💀", canvas.width / 2, canvas.height / 2);
+
+    ctx.font = "24px DM Mono";
+    ctx.fillText("Click 'Play Again' to restart", canvas.width / 2, canvas.height / 2 + 60);
+}
+
+function updateHighscore() {
+    if (highscore < currentScore) {
+        highscore = currentScore;
+        highscoreEl.textContent = highscore;
+    }
+}
+
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
@@ -233,6 +277,7 @@ function gameLoop() {
     ball.draw(ctx);
 
     for(const brick of bricks) { brick.draw(ctx) }
+    let totalBricks = bricks.length;
 
     if (ballIsMoving) {
         ball.update();
@@ -279,13 +324,7 @@ function gameLoop() {
         
         // Collided with the bottom
         else if (ball.y + ball.radius > canvas.height) { 
-            if (highscore < currentScore) {
-                console.log('entrou');
-                highscore = currentScore;
-                highscoreEl.textContent = highscore;
-            }
-
-            ballIsMoving = false;
+            loseScreen();
             return;
         }
 
@@ -325,6 +364,12 @@ function gameLoop() {
 
                 (Math.abs(ball.ySpeed) < 8) && (ball.ySpeed > 0 ? (ball.ySpeed += 0.25) : (ball.ySpeed -= 0.25));
                 currentScoreEl.textContent = ++currentScore;
+
+                if (currentScore === totalBricks) {
+                    victoryScreen();
+                    return; 
+                }
+
                 break;
             }
         }
