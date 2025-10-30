@@ -19,7 +19,7 @@ const BRICK_MIN_WIDTH = 60;
 const BRICK_MAX_WIDTH = 100;
 
 // Global variables
-let ballIsMoving, gameLoopId, bricks;
+let ballIsMoving, gameLoopId, bricks, currentScore = 0, highscore;
 
 class Ball {
     #xPosition;
@@ -208,6 +208,8 @@ playAgainBtn.addEventListener("click", () => {
 function startGame() {
     ballIsMoving = false;
     bricks = generateBricks();
+    currentScore = 0;
+    currentScoreEl.textContent = 0;
     gameLoop();
 }
 
@@ -317,6 +319,7 @@ function gameLoop() {
                 brick.isVisible = false;
 
                 (Math.abs(ball.ySpeed) < 8) && (ball.ySpeed > 0 ? (ball.ySpeed += 0.25) : (ball.ySpeed -= 0.25));
+                currentScoreEl.textContent = ++currentScore;
                 break;
             }
         }
