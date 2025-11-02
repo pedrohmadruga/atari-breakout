@@ -20,10 +20,22 @@ const PLATFORM_BOTTOM_MARGIN = 20;
 const BRICK_MIN_WIDTH = 60;
 const BRICK_MAX_WIDTH = 100;
 
-const music = new Audio('./audio/music.mp3');
-music.loop = true;
-music.volume = 1;
-music.preload = "auto"
+// Audio objects
+const musicAudio = new Audio('./audio/music.mp3');
+musicAudio.loop = true;
+musicAudio.preload = "auto"
+
+const brickCollisionAudio = new Audio('./audio/brick-collision.mp3');
+brickCollisionAudio.preload = "auto";
+
+const platformWallCollisionAudio = new Audio('./audio/platform-wall-collision.mp3');
+platformWallCollisionAudio.preload = "auto";
+
+const playerLoseAudio = new Audio('./audio/player-lose.wav');
+playerLoseAudio.preload = "auto";
+
+const playerWinAudio = new Audio('./audio/player-win.wav');
+playerWinAudio.preload = "auto";
 
 // Global variables
 let ballIsMoving, gameLoopId, bricks, currentScore = 0, highscore = 0, musicEnabled = true;
@@ -189,7 +201,7 @@ function generateBricks() {
 }
 
 function startMusic() {
-    music.play().catch(err => console.log("Error playing track: ", err));
+    musicAudio.play().catch(err => console.log("Error playing track: ", err));
 }
 
 document.addEventListener("click", startMusic, { once: true});
@@ -213,11 +225,11 @@ musicSoundEl.addEventListener("click", () => {
 
     if (image.includes('music-note.svg')) {
         musicSoundEl.style.backgroundImage = 'url("./images/music-note-slash.svg")';
-        music.pause();
+        musicAudio.pause();
     }
     else {
         musicSoundEl.style.backgroundImage = 'url("./images/music-note.svg")';
-        music.play().catch(() => {});
+        musicAudio.play().catch(() => {});
     }
 })
 
@@ -327,16 +339,19 @@ function gameLoop() {
         if (ball.x - ball.radius <= 0) { // Left
             ball.x = ball.radius; 
             ball.reverseX();
+            platformWallCollisionAudio.play();
         } 
         else if (ball.x + ball.radius >= canvas.width) { // Right
             ball.x = canvas.width - ball.radius;
             ball.reverseX();
+            platformWallCollisionAudio.play();
         }
 
         // Top collision
         if (ball.y - ball.radius <= 0) {
             ball.y = ball.radius;
             ball.reverseY();
+            platformWallCollisionAudio.play();
         }
 
         // Platform collision
@@ -356,6 +371,7 @@ function gameLoop() {
             ball.y += ny * overlap;
 
             ball.reverseY()
+            platformWallCollisionAudio.play();
 
             // Adjusts xSpeed based on the angle it collided with the platform
             const hitPoint = (ball.x - platform.x) / platform.width - 0.5; 
@@ -363,7 +379,8 @@ function gameLoop() {
         }
         
         // Collided with the bottom
-        else if (ball.y + ball.radius > canvas.height) { 
+        else if (ball.y + ball.radius > canvas.height) {
+            playerLoseAudio.play();
             loseScreen();
             return;
         }
@@ -405,7 +422,10 @@ function gameLoop() {
                 (Math.abs(ball.ySpeed) < 8) && (ball.ySpeed > 0 ? (ball.ySpeed += 0.25) : (ball.ySpeed -= 0.25));
                 currentScoreEl.textContent = ++currentScore;''
 
+                brickCollisionAudio.play();
+
                 if (currentScore === totalBricks) {
+                    playerWinAudio.play();
                     victoryScreen();
                     return; 
                 }
