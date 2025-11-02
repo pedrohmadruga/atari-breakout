@@ -1,9 +1,9 @@
 import * as audio from './audio.js'
 import * as constants from './constants.js'
 import * as utils from './utils.js'
-import { state } from './state.js';
-import { platform } from './main.js';
+import { state, platform } from './state.js';
 
+// Register all events
 export function registerEvents() {
     document.addEventListener("click", audio.startMusic, { once: true});
 

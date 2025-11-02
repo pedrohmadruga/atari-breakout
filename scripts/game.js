@@ -2,8 +2,7 @@ import * as constants from './constants.js'
 import * as audio from './audio.js'
 import * as screens from './screens.js'
 import * as utils from './utils.js'
-import { platform, ball } from './main.js';
-import { state } from './state.js'
+import { platform, ball, state } from './state.js';
 
 export function gameLoop() {
     constants.ctx.clearRect(0, 0, constants.canvas.width, constants.canvas.height); 

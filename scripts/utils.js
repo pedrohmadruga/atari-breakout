@@ -1,7 +1,6 @@
 import * as constants from './constants.js'
 import * as bricksUtils from './bricks.js'
-import { state } from './state.js'
-import { ball, platform } from './main.js';
+import { ball, platform, state } from './state.js';
 import { gameLoop } from './game.js';
 
 // "Sticks" a value inside an interval
