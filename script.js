@@ -20,8 +20,13 @@ const PLATFORM_BOTTOM_MARGIN = 20;
 const BRICK_MIN_WIDTH = 60;
 const BRICK_MAX_WIDTH = 100;
 
+const music = new Audio('./audio/music.mp3');
+music.loop = true;
+music.volume = 1;
+music.preload = "auto"
+
 // Global variables
-let ballIsMoving, gameLoopId, bricks, currentScore = 0, highscore = 0;
+let ballIsMoving, gameLoopId, bricks, currentScore = 0, highscore = 0, musicEnabled = true;
 
 class Ball {
     #xPosition;
@@ -183,6 +188,12 @@ function generateBricks() {
     return bricks;
 }
 
+function startMusic() {
+    music.play().catch(err => console.log("Error playing track: ", err));
+}
+
+document.addEventListener("click", startMusic, { once: true});
+
 gameSoundEl.addEventListener("click", () => {
     const image = getComputedStyle(gameSoundEl).backgroundImage;
 
@@ -198,14 +209,15 @@ gameSoundEl.addEventListener("click", () => {
 
 musicSoundEl.addEventListener("click", () => {
     const image = getComputedStyle(musicSoundEl).backgroundImage;
+    musicEnabled = !musicEnabled;
 
     if (image.includes('music-note.svg')) {
         musicSoundEl.style.backgroundImage = 'url("./images/music-note-slash.svg")';
-        // Set music volume to 0
+        music.pause();
     }
     else {
         musicSoundEl.style.backgroundImage = 'url("./images/music-note.svg")';
-        // Set music volume to 100
+        music.play().catch(() => {});
     }
 })
 
