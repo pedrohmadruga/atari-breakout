@@ -1,0 +1,19 @@
+// DOM and constants
+export const canvas = document.getElementById('gameCanvas');
+export const currentScoreEl = document.querySelector('.current_score');
+export const highscoreEl = document.querySelector('.highscore');
+export const playAgainBtn = document.querySelector('.play_again_button');
+export const musicSoundEl = document.querySelector(".music_sound");
+export const gameSoundEl = document.querySelector(".game_sound");
+export const ctx = canvas.getContext('2d');
+export const PLATFORM_STARTER_WIDTH = 75;
+export const BALL_STARTER_SPEED = 3;
+export const BALL_STARTER_RADIUS = 8;
+export const BRICK_X_MARGIN = 20; // Margin before the right and left borders of the canvas
+export const BRICK_Y_MARGIN = 50; // Margin before the top border
+export const BRICK_SPACING = 8; // Spacing between bricks
+export const BRICK_HEIGHT = 20;
+export const PLATFORM_HEIGHT = 10;
+export const PLATFORM_BOTTOM_MARGIN = 20;
+export const BRICK_MIN_WIDTH = 60;
+export const BRICK_MAX_WIDTH = 100;
