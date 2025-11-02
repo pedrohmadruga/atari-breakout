@@ -5,6 +5,8 @@ const canvas = document.getElementById('gameCanvas');
 const currentScoreEl = document.querySelector('.current_score');
 const highscoreEl = document.querySelector('.highscore');
 const playAgainBtn = document.querySelector('.play_again_button');
+const musicSoundEl = document.querySelector(".music_sound");
+const gameSoundEl = document.querySelector(".game_sound");
 const ctx = canvas.getContext('2d');
 const PLATFORM_STARTER_WIDTH = 75;
 const BALL_STARTER_SPEED = 3;
@@ -180,6 +182,32 @@ function generateBricks() {
 
     return bricks;
 }
+
+gameSoundEl.addEventListener("click", () => {
+    const image = getComputedStyle(gameSoundEl).backgroundImage;
+
+    if (image.includes('sound.svg')) {
+        gameSoundEl.style.backgroundImage = 'url("./images/sound-slash.svg")';
+        // Set game volume to 0
+    }
+    else {
+        gameSoundEl.style.backgroundImage = 'url("./images/sound.svg")';
+        // Set game volume to 100
+    }
+})
+
+musicSoundEl.addEventListener("click", () => {
+    const image = getComputedStyle(musicSoundEl).backgroundImage;
+
+    if (image.includes('music-note.svg')) {
+        musicSoundEl.style.backgroundImage = 'url("./images/music-note-slash.svg")';
+        // Set music volume to 0
+    }
+    else {
+        musicSoundEl.style.backgroundImage = 'url("./images/music-note.svg")';
+        // Set music volume to 100
+    }
+})
 
 // "Sticks" a value inside an interval
 function clamp(value, min, max) {
