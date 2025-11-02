@@ -78,23 +78,21 @@ h1 {
     margin-right: 10px;
     color: white;
     display: flex;
-    flex-direction: column  ;
+    flex-direction: column;
+}
+
+.sound_icon {
+    width: 24px;
+    height: 24px;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
 }
 
 .music_sound {
     background-image: url("./images/music-note.svg");
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: overlay;
-    width: 24px;
-    height: 24px;
 }
 
 .game_sound {
     background-image: url("./images/sound.svg");
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: overlay;
-    width: 24px;
-    height: 24px;
 }
