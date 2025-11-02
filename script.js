@@ -208,15 +208,18 @@ document.addEventListener("click", startMusic, { once: true});
 
 gameSoundEl.addEventListener("click", () => {
     const image = getComputedStyle(gameSoundEl).backgroundImage;
+    let soundOn;
 
     if (image.includes('sound.svg')) {
         gameSoundEl.style.backgroundImage = 'url("./images/sound-slash.svg")';
-        // Set game volume to 0
+        soundOn = false;
     }
     else {
         gameSoundEl.style.backgroundImage = 'url("./images/sound.svg")';
-        // Set game volume to 100
+        soundOn = true;
     }
+
+    toggleSound(soundOn);
 })
 
 musicSoundEl.addEventListener("click", () => {
@@ -256,6 +259,15 @@ playAgainBtn.addEventListener("click", () => {
     resetGame();
     startGame();
 });
+
+function toggleSound(soundOn) {
+    const volume = soundOn ? 1 : 0
+
+    brickCollisionAudio.volume = volume;
+    platformWallCollisionAudio.volume = volume;
+    playerLoseAudio.volume = volume;
+    playerWinAudio.volume = volume;
+}
 
 function startGame() {
     ballIsMoving = false;
