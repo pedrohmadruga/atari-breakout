@@ -67,3 +67,34 @@ h1 {
   background-color: #3e8e41; 
   transform: translateY(1px); 
 }
+
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.sound_options {
+    padding: 5px;
+    margin-right: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column  ;
+}
+
+.music_sound {
+    background-image: url("./images/music-note.svg");
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+    width: 24px;
+    height: 24px;
+}
+
+.game_sound {
+    background-image: url("./images/sound.svg");
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+    width: 24px;
+    height: 24px;
+}

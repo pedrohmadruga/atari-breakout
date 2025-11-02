@@ -363,7 +363,7 @@ function gameLoop() {
                 brick.isVisible = false;
 
                 (Math.abs(ball.ySpeed) < 8) && (ball.ySpeed > 0 ? (ball.ySpeed += 0.25) : (ball.ySpeed -= 0.25));
-                currentScoreEl.textContent = ++currentScore;
+                currentScoreEl.textContent = ++currentScore;''
 
                 if (currentScore === totalBricks) {
                     victoryScreen();
