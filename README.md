@@ -66,4 +66,6 @@ This project is part of my journey as a fullstack developer, focusing on improvi
 
 ---
 
+⚠️ Note: This game is optimized for desktop browsers mouse control and may not work correctly on mobile devices.
+
 Made by [@pedrohmadruga](https://github.com/pedrohmadruga)
